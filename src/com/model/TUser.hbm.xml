@@ -16,6 +16,10 @@
         <property name="userPw" type="java.lang.String">
             <column name="user_pw" length="50" />
         </property>
+        <property name="userhmacmd5" type="java.lang.String">
+            <column name="userHmacMD5" length="150" />
+        </property>
+
         <property name="userType" type="java.lang.Integer">
             <column name="user_type"/>
         </property>

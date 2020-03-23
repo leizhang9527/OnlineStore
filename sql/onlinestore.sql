@@ -12,8 +12,9 @@ File Encoding         : 65001
 
 Date: 2018-09-05 20:12:22
 */
-
-CREATE DATABASE IF NOT EXISTS onlinestore;
+drop DATABASE if EXISTS onlinestore;
+create DATABASE onlinestore CHARACTER SET utf8 COLLATE utf8_general_ci;
+use onlinestore;
 
 SET FOREIGN_KEY_CHECKS=0;
 
@@ -206,6 +207,23 @@ CREATE TABLE `t_user` (
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of t_user
--- ----------------------------
+
+DROP TABLE IF EXISTS `t_log`;
+CREATE TABLE `t_log` (
+  `OPER_ID` varchar(150) not null COMMENT '日志主键',
+  `TITLE` varchar(150) DEFAULT NULL COMMENT '模块标题',
+  `BUSINESS_TYPE` int(10) default 0 COMMENT '业务类型（0其它 1新增 2修改 3删除 4导出 5导入）',
+  `METHOD`  varchar(100)  DEFAULT NULL COMMENT '方法名称',
+  `REQUEST_METHOD` varchar(10)  DEFAULT NULL COMMENT '请求方式',
+  `OPER_NAME`  varchar(50)  DEFAULT NULL COMMENT '操作人',
+  `OPER_URL`  varchar(255)  DEFAULT NULL COMMENT '请求URL',
+  `OPER_IP`  varchar(50)  DEFAULT NULL COMMENT '主机地址',
+  `OPER_PARAM`   varchar(2000)  DEFAULT NULL COMMENT '请求参数',
+  `JSON_RESULT`   varchar(2000)  DEFAULT NULL COMMENT '返回参数',
+  `STATUS`      int(1) default 0 COMMENT '操作状态（0正常 1异常）',
+  `ERROR_MSG`     varchar(2000)  DEFAULT NULL COMMENT '错误消息',
+  `OPER_TIME`     datetime DEFAULT NULL COMMENT '操作时间',
+  `END_TIME`     datetime DEFAULT NULL COMMENT '结束时间',
+  `START_TIME`     datetime DEFAULT NULL COMMENT '开始时间',
+  PRIMARY KEY (`OPER_ID`)
+)comment '操作日志记录' ENGINE=InnoDB DEFAULT CHARSET=utf8;

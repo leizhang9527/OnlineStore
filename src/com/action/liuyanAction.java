@@ -4,6 +4,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.log.LogUtil;
+import com.util.IpUtil;
+import com.util.StringUtils;
 import org.apache.struts2.ServletActionContext;
 
 import com.dao.TLiuyanDAO;
@@ -45,12 +48,20 @@ public class liuyanAction extends ActionSupport
 		{
 			TUser user=(TUser)session.get("user");
 			liuyan.setLiuyanUser(user.getUserName());
+			try {
+				LogUtil.logInsert(StringUtils.uuid(),user.getUserName()+"留言成功",1,"liuyanAction.liuyanAdd","post",user.getUserName(),
+						"liuyanAction.liuyanAdd", IpUtil.getIpAddrByServletActionContext(),"","succeed",0,
+						"",new Date(),new Date(),new Date());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		
 		
 		liuyanDAO.save(liuyan);
 		this.setMessage("留言成功");
 		this.setPath("liuyanAll.action");
+
 		return "succeed";
 	}
 	
@@ -61,6 +72,15 @@ public class liuyanAction extends ActionSupport
 		liuyanDAO.delete(liuyan);
 		this.setMessage("留言删除成功");
 		this.setPath("liuyanMana.action");
+		try {
+			Map session=ActionContext.getContext().getSession();
+			TUser user=(TUser)session.get("user");
+			LogUtil.logInsert(StringUtils.uuid(),user.getUserName()+"删除留言"+liuyan.getLiuyanTitle()+"成功",1,"liuyanAction.liuyanDel","post",user.getUserName(),
+					"liuyanAction.liuyanDel", IpUtil.getIpAddrByServletActionContext(),"","succeed",0,
+					"",new Date(),new Date(),new Date());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return "succeed";
 	}
 	
@@ -70,6 +90,15 @@ public class liuyanAction extends ActionSupport
 		List liuyanList=liuyanDAO.findAll();
 		Map request=(Map)ServletActionContext.getContext().get("request");
 		request.put("liuyanList", liuyanList);
+		try {
+			Map session=ActionContext.getContext().getSession();
+			TUser user=(TUser)session.get("user");
+			LogUtil.logInsert(StringUtils.uuid(),user.getUserName()+"查看留言列表",1,"liuyanAction.liuyanAll","post",user.getUserName(),
+					"liuyanAction.liuyanAll", IpUtil.getIpAddrByServletActionContext(),"","succeed",0,
+					"",new Date(),new Date(),new Date());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return ActionSupport.SUCCESS;
 	}
 	

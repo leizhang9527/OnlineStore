@@ -38,7 +38,9 @@
 			    <value>com/model/TCatelog.hbm.xml</value>
 			    <value>com/model/TGoods.hbm.xml</value>
 			    <value>com/model/TOrderItem.hbm.xml</value>
-			    <value>com/model/TOrder.hbm.xml</value></list>
+			    <value>com/model/TOrder.hbm.xml</value>
+			    <value>com/model/TLog.hbm.xml</value>
+			</list>
 		</property>
 	</bean>
 	
@@ -126,8 +128,7 @@
 			<ref bean="TGonggaoDAO" />
 		</property>
 	</bean>
-	
-	
+
 	
 	<bean id="TCatelogDAO" class="com.dao.TCatelogDAO">
 		<property name="sessionFactory">
@@ -163,14 +164,6 @@
 		</property>
 	</bean>
 	
-	
-	
-	
-	
-	
-	
-	
-	
 	<bean id="TOrderItemDAO" class="com.dao.TOrderItemDAO">
 		<property name="sessionFactory">
 			<ref bean="sessionFactory" />
@@ -196,5 +189,20 @@
 			<ref bean="TOrderItemDAO" />
 		</property>
 	</bean>
-	
-	</beans>
+
+
+
+	<bean id="TLogDAO" class="com.dao.TLogDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory"></ref>
+		</property>
+	</bean>
+	<bean id="TLogAction" class="com.action.TLogAction" scope="prototype">
+		<property name="logDAO">
+			<ref bean="TLogDAO" />
+		</property>
+	</bean>
+
+
+
+</beans>

@@ -8,6 +8,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.log.LogUtil;
+import com.util.IpUtil;
+import com.util.StringUtils;
 import org.apache.struts2.ServletActionContext;
 
 import com.dao.TCatelogDAO;
@@ -49,7 +52,14 @@ public class buyAction extends ActionSupport
 		Cart cart = (Cart)session.get("cart");
 		cart.addGoods(goodsId, orderItem);
 		session.put("cart",cart);
-		//this.setMessage("");
+		TUser user=(TUser)session.get("user");
+		try {
+			LogUtil.logInsert(StringUtils.uuid(),user.getUserName()+"将"+goods.getGoodsName()+"加入购物车成功",1,"buyAction.addToCart","post",user.getUserName(),
+					"buyAction.addToCart", IpUtil.getIpAddrByServletActionContext(),"","succeed",0,
+					"",new Date(),new Date(),new Date());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		this.setPath("myCart.action");
 		return "succeed";
 	}
@@ -96,6 +106,13 @@ public class buyAction extends ActionSupport
 			goodsDAO.getHibernateTemplate().bulkUpdate("update TGoods set goodsKucun=goodsKucun-"+orderItem.getGoodsQuantity() +" where goodsId="+orderItem.getGoods().getGoodsId());
 			orderItemDAO.save(orderItem);
 		}
+		try {
+			LogUtil.logInsert(StringUtils.uuid(),user.getUserName()+"下单成功",1,"buyAction.addToCart","post",user.getUserName(),
+					"buyAction.addToCart", IpUtil.getIpAddrByServletActionContext(),"","succeed",0,
+					"",new Date(),new Date(),new Date());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		cart.getItems().clear();
 		session.put("cart", cart);
@@ -117,7 +134,13 @@ public class buyAction extends ActionSupport
 		List orderList=orderDAO.getHibernateTemplate().find(sql);
 		Map request=(Map)ServletActionContext.getContext().get("request");
 		request.put("orderList", orderList);
-		
+		try {
+			LogUtil.logInsert(StringUtils.uuid(),user.getUserName()+"查看订单",1,"buyAction.myOrder","post",user.getUserName(),
+					"buyAction.myOrder", IpUtil.getIpAddrByServletActionContext(),"","succeed",0,
+					"",new Date(),new Date(),new Date());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return ActionSupport.SUCCESS;
 	}
 	
@@ -142,6 +165,13 @@ public class buyAction extends ActionSupport
 		TUser user=(TUser)session.get("user");
 		
 		this.setMessage("删除成功");
+		try {
+			LogUtil.logInsert(StringUtils.uuid(),user.getUserName()+"订单删除成功",1,"buyAction.orderDel","post",user.getUserName(),
+					"buyAction.orderDel", IpUtil.getIpAddrByServletActionContext(),"","succeed",0,
+					"",new Date(),new Date(),new Date());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		this.setPath("myOrder.action?userId="+user.getUserId());
 		return "succeed";
 	}

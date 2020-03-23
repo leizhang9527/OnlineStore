@@ -3,6 +3,8 @@ package com.action;
 import java.util.List;
 import java.util.Map;
 
+import com.aspectj.lang.annotation.Log;
+import com.aspectj.lang.enums.BusinessType;
 import com.util.AesUtil;
 import org.apache.struts2.ServletActionContext;
 
@@ -23,8 +25,7 @@ public class adminAction extends ActionSupport
 	private int index=1;
 
 	private TAdminDAO adminDAO;
-	
-	
+
 	public String adminAdd()
 	{
 		TAdmin admin=new TAdmin();
@@ -36,9 +37,8 @@ public class adminAction extends ActionSupport
 		this.setPath("adminManage.action");
 		return "succeed";
 	}
-	
-	
-	
+
+
 	public String adminManage()
 	{
 		List adminList=adminDAO.findAll();

@@ -1,11 +1,16 @@
 package com.action;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import cn.hutool.crypto.digest.HMac;
 import cn.hutool.crypto.digest.HmacAlgorithm;
+import com.dao.TLogDAO;
+import com.log.LogUtil;
 import com.util.AesUtil;
+import com.util.IpUtil;
+import com.util.StringUtils;
 import org.apache.struts2.ServletActionContext;
 
 import com.dao.TUserDAO;
@@ -14,11 +19,14 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.util.Cart;
 
+import javax.servlet.http.HttpServletRequest;
+
 public class UserAction extends ActionSupport
 {
     private int userId;
 	private String userName;
 	private String userPw;
+	private String userhmacmd5;
 	private String userRealname;
 	private String userAddress;
 	private String userSex;
@@ -35,11 +43,11 @@ public class UserAction extends ActionSupport
 	private String path;
 	
 	private TUserDAO userDAO;
+
+	private TLogDAO logDAO;
 	
 	
-	
-	public String userReg()
-	{
+	public String userReg() {
 		TUser user=new TUser();
 		user.setUserName(userName);
 		user.setUserPw(userPw);
@@ -54,6 +62,13 @@ public class UserAction extends ActionSupport
 		userDAO.save(user);
 		Map session= ServletActionContext.getContext().getSession();
 		session.put("user", user);
+		try {
+			LogUtil.logInsert(StringUtils.uuid(),userName+"注册",1,"UserAction.userReg","post",userName,
+					"UserAction.userReg", IpUtil.getIpAddrByServletActionContext(),"","successAdd",0,
+					"",new Date(),new Date(),new Date());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return "successAdd";
 	}
 	public String userEdit()
@@ -72,18 +87,32 @@ public class UserAction extends ActionSupport
 		userDAO.attachDirty(user);
 		Map session= ServletActionContext.getContext().getSession();
 		session.put("user", user);
+		try {
+			LogUtil.logInsert(StringUtils.uuid(),userName+"修改信息",1,"UserAction.userEdit","post",userName,
+					"UserAction.userEdit", IpUtil.getIpAddrByServletActionContext(),"","successAdd",0,
+					"",new Date(),new Date(),new Date());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return "successAdd";
 	}
 	
 	
 	public String userLogin()
 	{
-		String sql="from TUser where userName=? and userPw=?";
-		Object[] con={userName,userPw};
+		String sql="from TUser where userName=? and userhmacmd5=?";
+		Object[] con={userName,AesUtil.generateKey(userPw)};
 		List userList=userDAO.getHibernateTemplate().find(sql,con);
 		if(userList.size()==0) {
 			this.setMessage("用户名或密码错误");
 			this.setPath("qiantai/default.jsp");
+			try {
+				LogUtil.logInsert(StringUtils.uuid(),userName+"登录失败",1,"UserAction.userLogin","post",userName,
+						"UserAction.userLogin", IpUtil.getIpAddrByServletActionContext(),"","failed",0,
+						"",new Date(),new Date(),new Date());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		} else {
 			 Map session= ServletActionContext.getContext().getSession();
 			 TUser user=(TUser)userList.get(0);
@@ -93,15 +122,29 @@ public class UserAction extends ActionSupport
 			 session.put("cart", cart);
 			 
 			 this.setMessage("成功登录");
+			try {
+				LogUtil.logInsert(StringUtils.uuid(),userName+"登录成功",1,"UserAction.userLogin","post",userName,
+						"UserAction.userLogin", IpUtil.getIpAddrByServletActionContext(),"","succeed",0,
+						"",new Date(),new Date(),new Date());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			 this.setPath("qiantai/default.jsp");
 		}
 		return "succeed";
 	}
 	
 	
-	public String userLogout()
-	{
+	public String userLogout() {
 		Map session= ServletActionContext.getContext().getSession();
+		TUser user=(TUser)session.get("user");
+		try {
+			LogUtil.logInsert(StringUtils.uuid(),user.getUserName()+"注销",1,"UserAction.userLogout","post",user.getUserName(),
+					"UserAction.userLogout", IpUtil.getIpAddrByServletActionContext(),"","succeed",0,
+					"",new Date(),new Date(),new Date());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		session.remove("user");
 		return ActionSupport.SUCCESS;
 	}
@@ -111,12 +154,20 @@ public class UserAction extends ActionSupport
 	
 	
 	
-	public String userDel()
-	{
+	public String userDel() {
+		Map session= ServletActionContext.getContext().getSession();
+		TUser user1=(TUser)session.get("user");
 		TUser user=userDAO.findById(userId);
 		user.setUserDel("yes");
 		userDAO.attachDirty(user);
 		this.setMessage("删除成功");
+		try {
+			LogUtil.logInsert(StringUtils.uuid(),user1.getUserName()+"删除用户"+user.getUserName()+"成功",1,"UserAction.userLogout","post",user1.getUserName(),
+					"UserAction.userLogout", IpUtil.getIpAddrByServletActionContext(),"","succeed",0,
+					"",new Date(),new Date(),new Date());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		this.setPath("userMana.action");
 		return "succeed";
 	}
@@ -131,8 +182,7 @@ public class UserAction extends ActionSupport
 	}
 	
 	
-	public String userMana()
-	{
+	public String userMana() {
 		List userList=userDAO.findAll();
 		Map request=(Map)ServletActionContext.getContext().get("request");
 		request.put("userList", userList);

@@ -91,21 +91,7 @@
         <action name="gonggaoQian5" class="gonggaoAction" method="gonggaoQian5">
             <result>/qiantai/gonggao/gonggaoQian5.jsp</result>
         </action>
-        
-        
-        
-        <action name="catelogMana" class="catelogAction" method="catelogMana">
-             <result name="success">/admin/catelog/catelogMana.jsp</result>
-        </action>
-        <action name="catelogAdd" class="catelogAction" method="catelogAdd">
-        </action>
-        <action name="catelogDel" class="catelogAction" method="catelogDel">
-        </action>
-        <action name="catelogAll" class="catelogAction" method="catelogAll">
-             <result name="success">/qiantai/catelog/catelogAll.jsp</result>
-        </action>
-        
-        
+
         
         <action name="goodsNoTejiaAdd" class="goodsAction" method="goodsNoTejiaAdd">
         </action>
@@ -188,5 +174,23 @@
         <action name="caiwuTongji" class="buyAction" method="caiwuTongji">
             <result name="success">/admin/caiwu/caiwuTongji.jsp</result>
         </action>
+
+
+        <action name="catelogMana" class="catelogAction" method="catelogMana">
+            <result name="success">/admin/catelog/catelogMana.jsp</result>
+        </action>
+        <action name="catelogAdd" class="catelogAction" method="catelogAdd">
+        </action>
+        <action name="catelogDel" class="catelogAction" method="catelogDel">
+        </action>
+        <action name="catelogAll" class="catelogAction" method="catelogAll">
+            <result name="success">/qiantai/catelog/catelogAll.jsp</result>
+        </action>
+
+
+        <action name="getAllLog" class="TLogAction" method="getAllLogList">
+            <result name="success">/admin/logs/log.jsp</result>
+        </action>
+
     </package>
 </struts>

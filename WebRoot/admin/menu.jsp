@@ -6,15 +6,14 @@ String path = request.getContextPath();
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-    <title>My JSP 'menu.jsp' starting page</title>
-	<meta http-equiv="pragma" content="no-cache">
-	<meta http-equiv="cache-control" content="no-cache">
-	<meta http-equiv="expires" content="0">    
-	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-	<meta http-equiv="description" content="This is my page">
-	<link rel="stylesheet" href="<%=path %>/css/base.css" type="text/css" />
-	<link rel="stylesheet" href="<%=path %>/css/menu.css" type="text/css" />
-	<style type="text/css">
+      <title>My JSP 'menu.jsp' starting page</title>
+	  <meta http-equiv="pragma" content="no-cache">
+	  <meta http-equiv="cache-control" content="no-cache">
+	  <meta http-equiv="expires" content="0">
+	  <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+	  <meta http-equiv="description" content="This is my page">
+	  <link rel="stylesheet" href="<%=path %>/css/base.css" type="text/css" />
+	  <style type="text/css">
 	    div {
 			padding:0px;
 			margin:0px;
@@ -130,8 +129,8 @@ String path = request.getContextPath();
 	      </dl>
 	      <!-- 1 -->
 	      <dl class='bitem'>
-	        <dt onClick='showHide("items6_1")'><b>订单管理</b></dt>
-	        <dd style='display:block' class='sitem' id='items6_1'>
+	        <dt onClick='showHide("items2_1")'><b>订单管理</b></dt>
+	        <dd style='display:block' class='sitem' id='items2_1'>
 	          <ul class='sitemu'>
 	             <li><a href='<%=path %>/userMana.action' target='main'>会员管理</a> </li>
 	             <li><a href='<%=path %>/orderMana.action' target='main'>订单管理</a> </li>
@@ -141,8 +140,8 @@ String path = request.getContextPath();
 	      <!-- 1 -->
 	      <!-- 1 -->
 	      <dl class='bitem'>
-	        <dt onClick='showHide("items6_1")'><b>财务管理</b></dt>
-	        <dd style='display:block' class='sitem' id='items6_1'>
+	        <dt onClick='showHide("items7_1")'><b>财务管理</b></dt>
+	        <dd style='display:block' class='sitem' id='items7_1'>
 	          <ul class='sitemu'>
 	             <li><a href='<%=path %>/goodsKucun.action' target='main'>库存管理</a> </li>
 	             <li><a href='<%=path %>/caiwuMana.action' target='main'>财务统计</a> </li>
@@ -150,6 +149,16 @@ String path = request.getContextPath();
 	        </dd>
 	      </dl>
 	      <!-- 1 -->
+			<!-- 1 -->
+			<dl class='bitem'>
+				<dt onClick='showHide("items6_1")'><b>行为记录管理</b></dt>
+				<dd style='display:block' class='sitem' id='items6_1'>
+					<ul class='sitemu'>
+						<li><a href='<%=path %>/getAllLog.action' target='main'>行为记录查看</a> </li>
+					</ul>
+				</dd>
+			</dl>
+			<!-- 1 -->
 	      <!-- 1 -->
 	      <dl class='bitem'>
 	        <dt onClick='showHide("items99_1")'><b>安全退出系统</b></dt>
